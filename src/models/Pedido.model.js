@@ -7,7 +7,7 @@ const pedidoSchema = new Schema({
     //Esto es referencia para los productos
     producto: {
         ref: 'Product',
-        typeof: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId
     },
     //Esto es referencia para los usuarios (token)
     solicitante: {
