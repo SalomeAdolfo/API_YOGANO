@@ -4,6 +4,7 @@ const productSchema = new Schema({
     name: String,
     capacidad: String,
     codigo: String,
+    precio_unitario: Number,
     created_by_user: {
         ref: 'User',
         type: Schema.Types.ObjectId
