@@ -23,5 +23,3 @@ export async function main(to, subject, text) {
 
     console.log("Mensaje enviado: %s", info.messageId);
 }
-
-main('al222010588@gmail.com', 'Prueba', 'Hola').catch(console.error);
