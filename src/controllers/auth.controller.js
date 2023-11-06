@@ -4,6 +4,7 @@ import config from '../config.js'
 import Role from '../models/Rol.model.js'
 
 export const signUp = async (req, res) => {
+try {
     const { name, apellido_paterno, apellido_materno, username, password, roles } = req.body
 
     const newUser = new User({
@@ -26,6 +27,10 @@ export const signUp = async (req, res) => {
     const savedUser = await newUser.save()
 
     res.status(200).json({ savedUser })
+} catch (error) {
+    console.log(error.message)
+    res.status(400).json(error.message)
+}
 }
 
 export const signIn = async (req, res) => {
