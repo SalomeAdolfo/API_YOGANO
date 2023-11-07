@@ -13,7 +13,11 @@ const pedidoSchema = new Schema({
     solicitante: {
         ref: 'User',
         type: Schema.Types.ObjectId
-    }
+    },
+    no_envio: String,
+    domicilio: String,
+    cod_postal: Number,
+    telefono: Number
 }, {
     timestamps: true,
     versionKey: false
