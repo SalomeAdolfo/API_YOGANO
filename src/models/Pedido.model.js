@@ -17,7 +17,8 @@ const pedidoSchema = new Schema({
     no_envio: String,
     domicilio: String,
     cod_postal: Number,
-    telefono: Number
+    telefono: Number,
+    correo: String
 }, {
     timestamps: true,
     versionKey: false

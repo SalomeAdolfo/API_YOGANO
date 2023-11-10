@@ -17,8 +17,7 @@ export async function main(to, subject, text) {
         from: "dsg1712@hotmail.com", // Dirección del remitente
         to: to, // Dirección del destinatario
         subject: subject, // Asunto
-        text: text, // Cuerpo del correo en texto plano
-        html: `<b>${text}</b>`, // Cuerpo del correo en formato HTML
+        html: text, // Cuerpo del correo en formato HTML
     });
 
     console.log("Mensaje enviado: %s", info.messageId);
