@@ -14,3 +14,11 @@ export const EMAIL_HOST = process.env.EMAIL_HOST
 export const EMAIL_PORT = process.env.EMAIL_PORT
 export const EMAIL_USER = process.env.EMAIL_USER
 export const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD
+
+export const PAYPAL_API_SECRET = process.env.PAYPAL_API_SECRET
+export const PAYPAL_API_CLIENT = process.env.PAYPAL_API_CLIENT
+
+export const PAYLPAL_API = "https://api-m.sandbox.paypal.com"
+
+console.log(PAYPAL_API_SECRET
+    ,PAYPAL_API_CLIENT)
