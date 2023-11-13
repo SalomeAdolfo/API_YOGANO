@@ -3,65 +3,6 @@ import { main } from '../libs/mailSetup.js'
 import Pedido from '../models/Pedido.model.js'
 import { PAYLPAL_API, PAYPAL_API_CLIENT, PAYPAL_API_SECRET } from '../config.js'
 
-export const createPedido = async (req, res) => {
-    try {
-        const { cantidad, total_a_pagar, no_tel, domicilio, correo } = req.body
-        //const newPedido = new Pedido({ cantidad, total_a_pagar, no_tel, domicilio, solicitante: req.userId, telefono: no_tel, domicilio, correo })
-//
-        //const savedPedido = await newPedido.save()
-//
-        //if (!savedPedido) return res.status(400).json({ message: "Hubo un error al guardar el pedido, inténtalo de nuevo más tarde." })
-        const order = {
-            intent: "CAPTURE",
-            purchase_units: [
-                {
-                    amount: {
-                        currency_code: "MXN",
-                        value: `${total_a_pagar}`
-                    },
-                    user_data: {
-                        cantidad, 
-                        total_a_pagar, 
-                        no_tel, 
-                        domicilio, 
-                        correo,
-                        solicitante: req.userId
-                    }
-                },
-            ],
-            application_context: {
-                brand_name: "YOGANO",
-                landing_page: "NO_PREFERENCE",
-                user_action: "PAY_NOW",
-                return_url: "http://127.0.0.1:3005/api/payment/capture-order",
-                cancel_url: "http://127.0.0.1:3005/"
-            }
-        }
-
-        const params = new URLSearchParams();
-
-        params.append('grant_type', 'client_credentials')
-
-        const { data: { access_token } } = await axios.post(`${PAYLPAL_API}/v1/oauth2/token`, params, {
-            auth: {
-                username: PAYPAL_API_CLIENT,
-                password: PAYPAL_API_SECRET
-            }
-        })
-        const response = await axios.post(`${PAYLPAL_API}/v2/checkout/orders`, order, {
-            headers: {
-                'Authorization': `Bearer ${access_token}`
-            }
-        })
-
-        res.status(200).json({ link: response.data.links[1].href })
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({ meesage: error.meesage })
-    }
-}
-
 export const getPedidos = async (req, res) => {
     try {
         const pedidos = await Pedido.find().populate({
@@ -124,5 +65,19 @@ export const setNumeroRastreo = async (req, res) => {
         res.status(200).json()
     } catch (error) {
         res.status(500).json({ message: error.message })
+    }
+}
+
+export const showCompradorPedidos = async (req, res) => {
+    try {
+        const pedidos = await Pedido.find({ solicitante: req.userId }).populate({
+            path: 'solicitante',
+            select: '-_id -password'
+        })
+        if (!pedidos) return res.status(404).json({ message: "No hay datos aún." })
+
+        res.status(200).json(pedidos)
+    } catch (error) {
+        res.status(500).json({ meesage: error.meesage })
     }
 }
