@@ -69,7 +69,28 @@ export const captureOrder = async (req, res) => {
 
         if (!savedPedido) return res.status(400).json({ message: "Hubo un error al guardar el pedido, inténtalo de nuevo más tarde." })
 
-        main('al222010588@gmail.com', 'Nuevo pedido', 'Pedido nuevo pagado en paypal')
+        main('al222010588@gmail.com', 'Nuevo pedido a surtir', `
+        <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo pedido</title>
+</head>
+
+<body
+    style="font-family: Arial, Helvetica, sans-serif;width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0; margin: 0;">
+    <section style="padding: 100px; box-shadow: 0px 0px 20px 1px black;border-radius: 10px;">
+        <h1 style="text-align: center;margin-bottom: 30px;">Nuevo pedido</h1>
+        <p style="font-size: 25px;">Tienes un nuevo <b>pedido</b> por surtir.</p>
+        <p style="font-size: 25px;">Agradecemos tu pronta atención a nuestro cliente.</p>
+        <p style="font-size: 25px; text-align: center;"><b>Saludos</b></p>
+    </section>
+</body>
+
+</html>
+        `)
         return res.send("Orden pagada, puedes cerrar esta pestaña.")
     }
     return res.send("Hubo un error al procesar la order, inténtalo de nuevo más tarde.")
