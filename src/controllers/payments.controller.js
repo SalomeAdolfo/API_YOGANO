@@ -1,24 +1,31 @@
 import axios from "axios"
 import { PAYLPAL_API, PAYPAL_API_CLIENT, PAYPAL_API_SECRET } from "../config.js"
+import Pedido from '../models/Pedido.model.js'
+import { main } from "../libs/mailSetup.js"
 
+let userOrder = undefined
 
 export const createOrder = async (req, res) => {
+    const { cantidad, total_a_pagar, no_tel, domicilio, correo } = req.body
+
+    userOrder = { cantidad, total_a_pagar, telefono: no_tel, domicilio, correo, solicitante: req.userId }
     const order = {
         intent: "CAPTURE",
         purchase_units: [
             {
                 amount: {
-                    currency_code: "USD",
-                    value: "100.00"
+                    currency_code: "MXN",
+                    value: `${total_a_pagar}`
                 }
-            },
+            }
+
         ],
         application_context: {
             brand_name: "YOGANO",
             landing_page: "NO_PREFERENCE",
             user_action: "PAY_NOW",
-            return_url: "http://localhost:3000",
-            cancel_url: "http://localhost:3000"
+            return_url: "http://127.0.0.1:3005/api/payment/capture-order",
+            cancel_url: "http://127.0.0.1:3005/"
         }
     }
 
@@ -37,7 +44,33 @@ export const createOrder = async (req, res) => {
             'Authorization': `Bearer ${access_token}`
         }
     })
-    console.log(response.data)
 
-    return res.json("dasdsa")
+    console.log(response.data.links[1])
+
+    res.status(200).json({ link: response.data.links[1].href })
+}
+
+export const captureOrder = async (req, res) => {
+
+    const { token } = req.query
+    const { cantidad, total_a_pagar, domicilio, solicitante, telefono, correo } = userOrder
+    const response = await axios.post(`${PAYLPAL_API}/v2/checkout/orders/${token}/capture`, {}, {
+        auth: {
+            username: PAYPAL_API_CLIENT,
+            password: PAYPAL_API_SECRET
+        }
+    })
+
+    console.log(response.data.status)
+    if (response.data.status === 'COMPLETED') {
+        const newPedido = new Pedido({ cantidad, total_a_pagar, domicilio, solicitante, telefono, correo })
+
+        const savedPedido = await newPedido.save()
+
+        if (!savedPedido) return res.status(400).json({ message: "Hubo un error al guardar el pedido, inténtalo de nuevo más tarde." })
+
+        main('al222010588@gmail.com', 'Nuevo pedido', 'Pedido nuevo pagado en paypal')
+        return res.send("Orden pagada, puedes cerrar esta pestaña.")
+    }
+    return res.send("Hubo un error al procesar la order, inténtalo de nuevo más tarde.")
 }
