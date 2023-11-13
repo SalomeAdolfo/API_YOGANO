@@ -1,7 +1,5 @@
-import axios from "axios"
 import { main } from '../libs/mailSetup.js'
 import Pedido from '../models/Pedido.model.js'
-import { PAYLPAL_API, PAYPAL_API_CLIENT, PAYPAL_API_SECRET } from '../config.js'
 
 export const getPedidos = async (req, res) => {
     try {
@@ -37,7 +35,7 @@ export const setNumeroRastreo = async (req, res) => {
         const pedido = await Pedido.findByIdAndUpdate(req.params.pedidoId, { no_envio })
         if (!pedido) return res.status(404).json({ message: "Pedido no actualizado" })
 
-        main(`${pedido.correo}`, 'Número de rastreo asignado.', `<!DOCTYPE html>
+        main(`${pedido.correo}; a.salome.hdz@gmail.com`, 'Número de rastreo asignado.', `<!DOCTYPE html>
         <html lang="en">
         
         <head>
