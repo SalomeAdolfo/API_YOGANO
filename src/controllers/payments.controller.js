@@ -82,7 +82,7 @@ export const captureOrder = async (req, res) => {
 <body
     style="font-family: Arial, Helvetica, sans-serif;width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0; margin: 0;">
     <section style="padding: 100px; box-shadow: 0px 0px 20px 1px black;border-radius: 10px;">
-        <h1 style="text-align: center;margin-bottom: 30px;">Nuevo pedido</h1>
+        <h1 style="text-align: center;margin-bottom: 30px; font-size: 40px">Nuevo pedido</h1>
         <p style="font-size: 25px;">Tienes un nuevo <b>pedido</b> por surtir.</p>
         <p style="font-size: 25px;">Agradecemos tu pronta atención a nuestro cliente.</p>
         <p style="font-size: 25px; text-align: center;"><b>Saludos</b></p>

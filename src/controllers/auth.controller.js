@@ -69,30 +69,3 @@ export const getStatusFromUser = async (req, res) => {
         res.status(500).json({ message: error })
     }
 }
-
-export const updatePassword = async (req, res) => {
-    const { currentPassword, newPassword } = req.body;
-
-    try {
-        // Buscar el usuario por su ID
-        const user = await User.findById(req.userId);
-        if (!user) {
-            return res.status(404).json({ message: "Usuario no encontrado" });
-        }
-
-        // Verificar si la contraseña actual es correcta
-        const isPasswordValid = await User.comparePassword(currentPassword, user.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: "Contraseña actual incorrecta" });
-        }
-
-        // Actualizar la contraseña
-        user.password = await User.encryptPassword(newPassword);
-        await user.save();
-
-        res.status(200).json({ message: "Contraseña actualizada exitosamente" });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error al actualizar la contraseña" });
-    }
-}
