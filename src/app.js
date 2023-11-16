@@ -22,6 +22,13 @@ app.use(cors({
     credentials: true,
 }));
 
+app.use((req, res, next) => {
+    res.header('Content-Type', 'application/json;charset=UTF-8');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-access-token');
+    next();
+});
+
 app.use(cookieParser(COOKIE_SECRET))
 
 app.use('/api/auth', authRoutes)

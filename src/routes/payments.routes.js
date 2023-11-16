@@ -4,5 +4,5 @@ import { verifyToken } from "../middlewares/authJWT.js";
 const router = Router();
 
 router.post('/create-order', [verifyToken] ,createOrder)
-router.get('/capture-order', [verifyToken], captureOrder)
+router.get('/capture-order', captureOrder)
 export default router;
